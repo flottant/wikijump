@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>域名变更通知</title>
+  <style>
+    /* 基础样式 */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    main {
+      flex-grow: 1;
+      padding: 2rem 1rem;
+    }
+    
+    footer {
+      background-color: #424242;
+      color: white;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      font-size: 0.875rem;
+    }
+    
+    /* 卡片样式 */
+    .card {
+      background-color: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      max-width: 36rem;
+      margin: 0 auto;
+    }
+    
+    .card:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-top-bar {
+      height: 0.125rem;
+      background-color: #1976D2;
+    }
+    
+    .card-content {
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    /* 图标样式 */
+    .icon-circle {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      background-color: rgba(25, 118, 210, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 1.5rem;
+    }
+    
+    .icon {
+      color: #1976D2;
+      font-size: 1.5rem;
+    }
+    
+    /* 文本样式 */
+    h2 {
+      color: #424242;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+      color: #757575;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* 域名显示 */
+    .domain-container {
+      background-color: #f5f5f5;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+    
+    .domain-text {
+      color: #424242;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    
+    .copy-button {
+      color: #1976D2;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    
+    .copy-button:hover {
+      color: rgba(25, 118, 210, 0.8);
+    }
+    
+    /* 按钮样式 */
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+    
+    @media (min-width: 640px) {
+      .button-container {
+        flex-direction: row;
+      }
+    }
+    
+    .action-button {
+      background-color: #1976D2;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+    }
+    
+    .action-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(25, 118, 210, 0.25);
+    }
+    
+    .action-button .button-icon {
+      margin-right: 0.5rem;
+    }
+    
+    /* 复制提示 */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #4CAF50;
+      color: white;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+    }
+    
+    .toast.show {
+      opacity: 1;
+    }
+    
+    .toast-icon {
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- 主内容区 -->
+  <main>
+    <div class="max-w-2xl mx-auto">
+      <!-- 通知卡片 -->
+      <div class="card">
+        <!-- 顶部蓝色条 -->
+        <div class="card-top-bar"></div>
+        
+        <!-- 卡片内容 -->
+        <div class="card-content">
+          <!-- 图标 -->
+          <div class="icon-circle">
+            <span class="icon">
+              <!-- 交换图标，使用纯CSS实现 -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 1 21 6 16 11"></polyline>
+                <polyline points="8 23 3 18 8 13"></polyline>
+                <line x1="21" y1="6" x2="3" y2="6"></line>
+                <line x1="8" y1="18" x2="16" y2="18"></line>
+              </svg>
+            </span>
+          </div>
+          
+          <!-- 标题 -->
+          <h2>域名已变更</h2>
+          <p class="subtitle">我们的网站已迁移至新域名</p>
+          
+          <!-- 新域名 -->
+          <div class="domain-container">
+            <div class="flex items-center">
+              <span class="domain-text">zstu.flot.moe</span>
+              <button id="copyBtn" class="copy-button">
+                <!-- 复制图标，使用纯CSS实现 -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- 操作按钮 -->
+          <div class="button-container">
+            <a href="https://zstu.flot.moe" target="_blank" class="action-button">
+              <span class="button-icon">
+                <!-- 外部链接图标，使用纯CSS实现 -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </span>
+              立即访问
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer>
+    <p>© 2023 zstu.flot.moe. 保留所有权利。</p>
+  </footer>
+
+  <!-- 复制成功提示 -->
+  <div id="copyToast" class="toast">
+    <span class="toast-icon">
+      <!-- 成功图标，使用纯CSS实现 -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+    </span>
+    <span>已复制新域名到剪贴板</span>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // 复制域名到剪贴板
+    document.getElementById('copyBtn').addEventListener('click', function() {
+      const domain = 'zstu.flot.moe';
+      navigator.clipboard.writeText(domain)
+        .then(() => {
+          // 显示复制成功提示
+          const toast = document.getElementById('copyToast');
+          toast.classList.add('show');
+          
+          // 3秒后隐藏提示
+          setTimeout(() => {
+            toast.classList.remove('show');
+          }, 3000);
+        })
+        .catch(err => {
+          console.error('复制失败:', err);
+        });
+    });
+  </script>
+</body>
+</html>
